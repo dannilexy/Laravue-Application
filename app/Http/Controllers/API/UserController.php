@@ -68,6 +68,7 @@ class UserController extends Controller
         return \auth('api')->user();
     }
 
+
     public function change(Request $request){
        $user = auth('api')->user();
 
@@ -131,12 +132,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+
+        //performing authorization at the controller level
+        $this->authorize('isAdmin');
+
+
         $user = User::findOrFail($id);
 
         $user -> delete();
 
         return ['message' => 'User was deleted'];
     }
-
-
 }

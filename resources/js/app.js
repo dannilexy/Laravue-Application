@@ -5,13 +5,19 @@ let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
     { path: '/profile', component: require('./components/Profile.vue').default },
     { path: '/users', component: require('./components/Users.vue').default },
-    { path: '/developer', component: require('./components/Developer.vue').default },
 ]
+
 
 
 window.Vue = require('vue');
 import { slice } from 'lodash';
 import Form from 'vform'
+
+//importing Gate that we created
+import Gate from "./Gate"
+
+//making gate a prototype
+Vue.prototype.$gate = new Gate(window.user);
 
 window.Form = Form;
 
@@ -29,7 +35,7 @@ const options = {
         termination: 300
     },
     autoRevert: true,
-    location: 'top',
+    location: 'left',
     inverse: false
 }
 Vue.use(VueProgressBar, options) // usage of progress bar
@@ -82,6 +88,8 @@ Vue.filter('myDate', function(text) {
     return moment(text).format('MMMM Do YYYY');
 });
 
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -90,24 +98,12 @@ Vue.filter('myDate', function(text) {
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-
-Vue.component(
-    'passport-clients',
-    require('./components/passport/Clients.vue').default
-);
-
-Vue.component(
-    'passport-authorized-clients',
-    require('./components/passport/AuthorizedClients.vue').default
-);
-
-Vue.component(
-    'passport-personal-access-tokens',
-    require('./components/passport/PersonalAccessTokens.vue').default
-);
-
-
 Vue.component('example-component', require('./components/ExampleComponent.vue')); // Componnet for example
+import NotFound from './components/404.vue';
+components: {
+    NotFound
+}
+Vue.component('not-found', require('./components/404.vue')); // Componnet for 404
 
 const app = new Vue({
     el: '#app',
